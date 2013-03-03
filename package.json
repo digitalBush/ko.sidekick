@@ -1,0 +1,25 @@
+{
+  "name": "ko.sidekick",
+  "version": "0.1.0",
+  "author": "Josh Bush",
+  "description": "Bringing a Backbone feel to Knockout",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalBush/ko.sidekick.git"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "sinon": "*",
+    "jsdom": "*",
+    "knockout-client": "*",
+    "jQuery": "*"
+  }, 
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.6"
+  }
+}

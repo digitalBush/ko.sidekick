@@ -4,6 +4,11 @@ Knockout Sidekick
 This project is my playgorund for introducing Backbone concepts that work with Knockout. 
 **Warning:** This project is in its early stages. *Proceed with caution*
 
+Want to help?
+-------------
+* run `npm install` to install dependencies
+* run `npm test` to run tests
+
 
 Model
 -----
