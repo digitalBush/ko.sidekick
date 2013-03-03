@@ -105,11 +105,6 @@
 
 
   (function(){
-      //TODO: How can we elegantly apply extended observables?
-      // handling in init() good enough? this.Cash.money();
-      //TODO: How can we elegantly nest models?
-      //TODO: How do we handle writable observables?
-
       var Model = ko.Model = function(properties) {
           var props = properties||{};
 
@@ -120,8 +115,6 @@
           this.set(props);
           this.init.apply(this, arguments);
       };
-
-      //TODO: mix in subscribable?
 
       utils.extend(Model.prototype,{
           idAttribute:'id',
@@ -144,7 +137,6 @@
                       }else if(value instanceof Array){
                           self[key]=ko.observableArray(value);
                       }else{
-                          //TODO: detect objects and see if we need to create nested model
                           self[key]=ko.observable(value);
                       }
                       self._properties[key]=self[key];
