@@ -1,0 +1,5 @@
+--require should
+--require sinon
+--require test/setup
+--reporter spec
+--ui bdd
