@@ -1,3 +1,9 @@
+/*
+  Knockout.js Sidekick
+	Copyright (c) 2013 Josh Bush (digitalbush.com)
+	Licensed under the MIT license (https://raw.github.com/digitalBush/ko.sidekick/master/LICENSE)
+*/
+
 (function(undefined){
   var utils = (function(){
     var utils ={},
