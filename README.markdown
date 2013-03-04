@@ -40,7 +40,7 @@ var josh = new Person({
 josh.save();
 
 
-//You can fetch a model if you know it's id
+//You can fetch a model if you know its id
 var fred = new Person({id:42});
 fred.fetch();
 
