@@ -80,4 +80,26 @@ describe('Model',function(){
       model.getName().should.equal("Josh Bush");
     });
   });
+
+  describe('When setting model property to a constructor function extending ko.Model', function() {
+    var Person = ko.Model.extend();
+    var Order = ko.Model.extend({
+      defaults:{
+        customer:Person
+      }
+    });
+
+    var model=new Order({customer:{firstName:"Josh",lastName:"Bush"}});
+
+    it('should create a nested model', function() {      
+      model.should.have.property('customer');
+      model.customer.should.be.an.instanceOf(Person);
+    });
+
+    it('should set up observables on the nested model', function() {      
+      model.customer.firstName().should.equal("Josh");
+      model.customer.lastName().should.equal("Bush");
+
+    });
+  });
 });

@@ -4,6 +4,7 @@
         forEach = [].forEach,
         slice = [].slice;
 
+    //Underscore.js (c) Jeremy Ashkenas, DocumentCloud Inc. https://github.com/documentcloud/underscore/
     var each = utils.each = function(obj, callback, context) {
       if (obj == null) return;
       if (forEach && obj.forEach === forEach) {
@@ -21,6 +22,7 @@
       }
     };
 
+    //Underscore.js (c) Jeremy Ashkenas, DocumentCloud Inc. https://github.com/documentcloud/underscore/
     utils.extend=function(obj){
       each(slice.call(arguments, 1), function(source) {
         if (source) {
@@ -39,34 +41,6 @@
     utils.value = function(value){
       return isFunction(value) ? value() : value;
     };
-
-    utils.inherit = function(protoProps, staticProps) {
-      var parent = this,child;
-      if (protoProps && protoProps.hasOwnProperty('constructor')) {
-        child = protoProps.constructor;
-      } else {
-        child = function(){ parent.apply(this, arguments); };
-      }
-
-      // Add static properties to the constructor function, if supplied.
-      utils.extend(child, parent, staticProps);
-
-      // Set the prototype chain to inherit from `parent`, without calling
-      // `parent`'s constructor function.
-      var Surrogate = function(){ this.constructor = child; };
-      Surrogate.prototype = parent.prototype;
-      child.prototype = new Surrogate;
-
-      // Add prototype properties (instance properties) to the subclass,
-      // if supplied.
-      if (protoProps) utils.extend(child.prototype, protoProps);
-
-      // Set a convenience property in case the parent's prototype is needed
-      // later.
-      child.__super__ = parent.prototype;
-      return child;
-    };
-
     return utils;
   })();
 
@@ -123,26 +97,31 @@
           },
           init:function(){},
           set:function(props){
-              var self=this;
-              utils.each(props,function(value,key){
-                  if(self.hasOwnProperty(key)){
-                      if(ko.isObservable(self[key]))
-                          self[key](value);
-                      else
-                          self[key]=value;
-                  }
-                  else{
-                      if(utils.isFunction(value)){
-                          self[key]=ko.computed(value,self);
-                      }else if(value instanceof Array){
-                          self[key]=ko.observableArray(value);
-                      }else{
-                          self[key]=ko.observable(value);
-                      }
-                      self._properties[key]=self[key];
-                  }
-              });
-              return self;
+            var self=this;
+            utils.each(props,function(value,key){
+              if(self.hasOwnProperty(key)){
+                if(ko.isObservable(self[key])){
+                  self[key](value);
+                }else if (self[key] instanceof ko.Model){
+                  self[key].set(value);
+                }else{
+                  self[key]=value;
+                }
+              }else{
+                if(self.defaults && self.defaults[key].extend===ko.Model.extend){
+                  self[key] = new self.defaults[key]();
+                  if(!utils.isFunction(value)) self[key].set(value);
+                }else if(utils.isFunction(value)){
+                    self[key]=ko.computed(value,self);
+                }else if(value instanceof Array){
+                    self[key]=ko.observableArray(value);
+                }else{
+                    self[key]=ko.observable(value);
+                }
+                self._properties[key]=self[key];
+              }
+            });
+            return self;
           },
           toJSON:function(){
               return this._properties;
@@ -195,6 +174,27 @@
             return response;
           }
       });
-      Model.extend = utils.inherit;
+
+      //Backbone.js (c) Jeremy Ashkenas, DocumentCloud https://github.com/documentcloud/backbone
+      var extend = function(protoProps, staticProps) {
+        var parent = this,child;
+        if (protoProps && protoProps.hasOwnProperty('constructor')) {
+          child = protoProps.constructor;
+        } else {
+          child = function(){ parent.apply(this, arguments); };
+        }
+
+        utils.extend(child, parent, staticProps);
+
+        var Surrogate = function(){ this.constructor = child; };
+        Surrogate.prototype = parent.prototype;
+        child.prototype = new Surrogate;
+
+        if (protoProps) utils.extend(child.prototype, protoProps);
+
+        child.__super__ = parent.prototype;
+        return child;
+      };
+      Model.extend = extend;
   })();
 })();
