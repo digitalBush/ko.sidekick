@@ -1,7 +1,7 @@
 Knockout Sidekick
 =================
 
-This project is my playgorund for introducing Backbone concepts that work with Knockout. 
+This project is my playground for introducing Backbone concepts that work with Knockout. 
 **Warning:** This project is in its early stages. *Proceed with caution*
 
 Want to help?
