@@ -120,7 +120,7 @@
                 }else if(utils.isFunction(value)){
                     self[key]=ko.computed(value,self);
                 }else if(value instanceof Array){
-                    self[key]=ko.observableArray(value);
+                    self[key]=ko.observableArray(value.slice(0));
                 }else{
                     self[key]=ko.observable(value);
                 }
