@@ -102,4 +102,19 @@ describe('Model',function(){
 
     });
   });
+
+  describe('When setting up a model', function() {
+    it('should not add array values by reference', function() {
+      var Person = ko.Model.extend();
+      var Order = ko.Model.extend({
+        defaults:{
+          list: []
+        }
+      });
+
+      new Order().list.push('foo');
+
+      Order.prototype.defaults.list.length.should.equal(0);
+    });
+  });
 });
